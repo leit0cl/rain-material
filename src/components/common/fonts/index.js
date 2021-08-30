@@ -1,0 +1,1 @@
+export const Fuentes = { principal: 'Raleway', secundaria: 'Raleway', alternativa: 'Raleway', controles: 'Raleway', botones: 'Raleway' }
