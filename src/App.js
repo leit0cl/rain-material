@@ -23,8 +23,11 @@ import Payments from "./components/crm/payments";
 function App() {
   const mountedRef = useRef(true);
   const [usuario, setUsuario] = useState([]);
+  // eslint-disable-next-line
   const [_data, setData] = useState([]);
+  // eslint-disable-next-line
   const [_rrss, setRedes] = useState([]);
+  // eslint-disable-next-line
   const [_codes, setCodes] = useState([]);
 
   useEffect(() => {
