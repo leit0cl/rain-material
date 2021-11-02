@@ -136,6 +136,12 @@ export const renderComboGraphQl = (e, i) => {
     );
 }
 
+export const renderComboGraphQlEquipo = (e, i) => {
+    return (
+        <option key={e.id} value={e.nombre}>{e.nombre}</option>
+    );
+}
+
 export const renderComboGraphQlPorId = (e, i) => {
     return (
         <option key={e.id} value={e.id}>{e.nombre}</option>

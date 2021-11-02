@@ -1,0 +1,44 @@
+type Equipo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  nombre: String
+  estado: String
+  nombre_repre: String
+  correo_repre: AWSEmail
+}
+
+type Codigo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  code: String
+  estado: String
+  influencer: AWSJSON
+  creado: AWSDateTime
+  usado: AWSDateTime
+  externali: String
+  glosa: String
+}
+
+type Influencer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  level: String
+  usuario: AWSEmail
+  nombre: String
+  nickname: String
+  creado: AWSDateTime
+  data_banca: AWSJSON
+}
+
+type Postulante @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  tipo: String
+  nickname: String
+  representante: String
+  tipodoc: String
+  rut: String
+  email: AWSEmail
+  about: String
+  rrss: AWSJSON
+  codes: AWSJSON
+  fecha_postulacion: AWSDateTime
+  equipo: String
+}
+  
