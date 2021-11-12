@@ -1,9 +1,22 @@
-import { API, graphqlOperation } from 'aws-amplify';
-import { ALL } from './queries';
+import Amplify, { API } from 'aws-amplify';
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
 
 export const TodosLosEquipos = async () => {
-  const equipos = await API.graphql(graphqlOperation(ALL));
-  return equipos;
+  const LISTA = `query MyQuery {
+    listEquipos(limit: 500) {
+        items {
+          id
+          nombre
+          estado
+          nombre_repre
+          correo_repre
+          }
+        }
+      }
+      `
+  const equipo = await API.graphql({ query: LISTA });
+  return equipo;
 }
 
 

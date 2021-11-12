@@ -138,7 +138,7 @@ export const renderComboGraphQl = (e, i) => {
 
 export const renderComboGraphQlEquipo = (e, i) => {
     return (
-        <option key={e.id} value={e.nombre}>{e.nombre}</option>
+        <option key={e.id} value={JSON.stringify(e)}>{e.nombre}</option>
     );
 }
 

@@ -43,16 +43,17 @@ function Congrats(props) {
           width: "100vw",
           textAlign: "center",
           padding: "2vh",
+          verticalAlign: "top",
           backgroundColor: Colors.pink,
         }}
       >
         <Grid item xs={12} md={4}></Grid>
         <Grid item xs={12} md={4}>
-          <img src={cabeza} alt={""}></img>
-          <Divider flexItem={true} style={{ margin: "1em" }}></Divider>
+          <img src={cabeza} alt={""} style={{height:'30vh'}}></img>
+          <Divider flexItem={true} style={{ margin: "5px" }}></Divider>
           <img src={recibido} alt={""}></img>
-          <Divider flexItem={true} style={{ margin: "1em" }}></Divider>
-          <BotonSec fullwith={"false"} variant="outlined" onClick={handleClose} style={{fontWeight:500, width:'327px'}}>
+          <Divider flexItem={true} style={{ margin: "5px" }}></Divider>
+          <BotonSec fullwith={"false"} variant="outlined" onClick={handleClose} style={{fontWeight:500, width:'100%'}}>
             VOLVER AL INICIO
           </BotonSec>
         </Grid>

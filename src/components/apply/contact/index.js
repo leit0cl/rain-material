@@ -18,12 +18,12 @@ import {
   SinglePlayer,
   DoublePlayer,
   BotonSiguiente,
+  BotonAtras
 } from "../../common/buttons";
 import { Colors } from "../../common/colors";
 import CloseIcon from "@material-ui/icons/Close";
 import VideogameAssetIcon from "@material-ui/icons/VideogameAsset";
 import { TextForm } from "../../common/textbox";
-import { useInput } from "../../../resources/hooks/input-hook";
 import { PurpleRadio } from "../../common/radio";
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -34,6 +34,9 @@ function Contact(props) {
   const [_existeequipo, setExisteEquipo] = useState("NO");
   const [_muestra_n1, setMuestraN1] = useState(true);
   const [_equipos, setEquipos] = useState([]);
+  const [_nombre_repre, setNombreRepre] = useState("");
+  const [_disabledsiguientesingle, setDisabledSiguienteSingle] = useState(true);
+  const [_disabledsiguienteequipo, setDisabledSiguienteEquipo] = useState(true);
 
   const useStyles = makeStyles({
     icon: {
@@ -43,34 +46,15 @@ function Contact(props) {
 
   const classes = useStyles();
 
-
-  const {
-    value: _nickname,
-    bind: bindNickName,
-    reset: resetNickName,
-  } = useInput("");
-
-  const { value: _name, bind: bindName, reset: resetName } = useInput("");
-  const { value: _rut, bind: bindRut, reset: resetRut } = useInput("");
-  const { value: _email, bind: bindEmail, reset: resetEmail } = useInput("");
-  const { value: _equipo, bind: bindEquipo, reset: resetEquipo } = useInput("");
-
-  const {
-    value: _pocodeti,
-    bind: bindPocoDeTi,
-    reset: resetPocoDeTi,
-  } = useInput("");
-
+  const [_equipo, setEquipo] = useState("");
+  const [_nickname, setNickName] = useState('');
+  const [_name, setName] = useState('');
+  const [_rut, setRut] = useState('');
+  const [_email, setEmail] = useState('');
+  const [_pocodeti, setPocoDeti] = useState('');
   const [_tipoDoc, setTipoDoc] = useState("RUT");
 
-  const reset = async () => {
-    resetNickName();
-    resetName();
-    resetRut();
-    resetEmail();
-    resetPocoDeTi();
-    resetEquipo();
-  }
+
 
   const handleChangeTipoDoc = (event) => {
     setTipoDoc(event.target.value);
@@ -85,7 +69,7 @@ function Contact(props) {
     setBackdrop(true);
     let res = TodosLosEquipos();
     res.then(ok => {
-      console.log(ok);
+      setEquipos(ok.data.listEquipos.items);
       setBackdrop(false);
     }).catch(err => {
       console.log(err);
@@ -93,21 +77,171 @@ function Contact(props) {
     });
   }
 
+
+
   useEffect(() => {
-    reset();
+
+
+
+    let cumple_unpocodeti = false;
+    let cumple_equipo = false;
+    let cumple_name = false;
+    let cumple_email = false;
+
+    if (_existeequipo === 'NO') {
+
+
+      if (_pocodeti === '') {
+        cumple_unpocodeti = false
+      } else {
+        cumple_unpocodeti = true
+      }
+
+      if ((_nickname === '') && (_equipo === '')) {
+        cumple_equipo = false
+      } else {
+        cumple_equipo = true
+      }
+
+      if ((_nombre_repre === '') && (_name === '')) {
+        cumple_name = false
+      } else {
+        cumple_name = true
+      }
+
+      if (_email === '') {
+        cumple_email = false
+      } else {
+        cumple_email = true
+      }
+
+      if (cumple_email === true && cumple_name === true && cumple_equipo === true && cumple_unpocodeti === true) {
+        setDisabledSiguienteEquipo(false);
+      } else {
+        setDisabledSiguienteEquipo(true);
+      }
+    } else {
+
+
+      if (_pocodeti === '') {
+        cumple_unpocodeti = false
+      } else {
+        cumple_unpocodeti = true
+      }
+
+      if ((_nickname === '') && (_equipo === '')) {
+        cumple_equipo = false
+      } else {
+        cumple_equipo = true
+      }
+
+      if ((_nombre_repre === '') && (_name === '')) {
+        cumple_name = false
+      } else {
+        cumple_name = true
+      }
+
+      if (_email === '') {
+        cumple_email = false
+      } else {
+        cumple_email = true
+      }
+
+      if (cumple_email === true && cumple_name === true && cumple_equipo === true && cumple_unpocodeti === true) {
+        setDisabledSiguienteEquipo(false);
+      } else {
+        setDisabledSiguienteEquipo(true);
+      }
+    }
+
+
+
+  }, [_name, _equipo, _nombre_repre, _email, _existeequipo, _pocodeti, _nickname])
+
+
+
+
+  useEffect(() => {
+    let cumple_unpocodeti = false;
+    let cumple_nick = false;
+    let cumple_name = false;
+    let cumple_rut = false;
+    let cumple_email = false;
+
+    if (_pocodeti === '') {
+      cumple_unpocodeti = false
+    } else {
+      cumple_unpocodeti = true
+    }
+
+    if (_nickname === '') {
+      cumple_nick = false
+    } else {
+      cumple_nick = true
+    }
+
+    if (_name === '') {
+      cumple_name = false
+    } else {
+      cumple_name = true
+    }
+
+    if (_rut === '') {
+      cumple_rut = false
+    } else {
+      cumple_rut = true
+    }
+
+    if (_email === '') {
+      cumple_email = false
+    } else {
+      cumple_email = true
+    }
+
+    if (cumple_email === true && cumple_name === true && cumple_nick === true && cumple_rut === true && cumple_unpocodeti === true) {
+      setDisabledSiguienteSingle(false);
+    } else {
+      setDisabledSiguienteSingle(true);
+    }
+
+
+  }, [_nickname, _name, _rut, _email, _tipoDoc, _pocodeti])
+
+  useEffect(() => {
     loadequipos();
+    let borrador = props.data;
+    if (borrador.tipo === undefined) {
+      console.log(borrador);
+    } else {
+      setTipoPlayer(borrador.tipo);
+      if (borrador.tipo !== '') {
+        setMuestraN1(false);
+        setNickName(borrador.nick)
+        setName(borrador.name);
+        setRut(borrador.doc);
+        setTipoDoc(borrador.tipodoc);
+        setEmail(borrador.email);
+        setPocoDeti(borrador.mas)
+        if (borrador.existe === true) {
+          setExisteEquipo('SI')
+        } else {
+          setExisteEquipo('NO')
+        }
+      }
+    }
+
     return () => {
       mountedRef.current = false;
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClose = async () => {
-    props.navigation("hone");
+    props.navigation("home");
   };
 
   const handleGetTipoPlayer = async (tipo) => {
-    console.log(tipo);
     setMuestraN1(false);
     setTipoPlayer(tipo);
   };
@@ -119,15 +253,73 @@ function Contact(props) {
   const handleGetDatosContacto = async () => {
     let data = {};
     data.tipo = _tipoplayer;
-    data.nick = _nickname;
-    data.name = _name;
-    data.tipodoc = _tipoDoc;
-    data.doc = _rut;
-    data.email = _email;
-    data.mas = _pocodeti;
-    data.equipo = _equipo;
+    if (_tipoplayer === 'MULTI') {
+      if (_existeequipo === 'NO') {
+        data.equipo = _equipo;
+        data.nick = _nickname;
+        data.name = _name;
+        data.tipodoc = '';
+        data.doc = '';
+        data.email = _email;
+        data.mas = _pocodeti;
+        data.existe = false;
+      } else {
+        data.equipo = _equipo;
+        data.nick = _nickname;
+        data.name = _nombre_repre;
+        data.tipodoc = '';
+        data.doc = '';
+        data.email = _email;
+        data.mas = _pocodeti;
+        data.existe = true;
+      }
+    } else {
+      data.tipo = _tipoplayer;
+      data.nick = _nickname;
+      data.name = _name;
+      data.tipodoc = _tipoDoc;
+      data.doc = _rut;
+      data.email = _email;
+      data.mas = _pocodeti;
+      data.equipo = '';
+      data.existe = false;
+    }
+
     props.callback(data);
   };
+
+  const handleAtras = async () => {
+    setTipoPlayer('');
+    setMuestraN1(true);
+  };
+
+
+  const handleChangeEquipo = (e) => {
+    let arreglo = JSON.parse(e.target.value);
+    setEquipo(arreglo.id);
+    setNombreRepre(arreglo.nombre_repre);
+  }
+
+  const handleChangeNickName = (e) => {
+    setNickName(e.target.value);
+  }
+
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  }
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const handleChangeRut = (e) => {
+    setRut(e.target.value);
+  }
+
+  const handleChangePocoDeTi = (e) => {
+    setPocoDeti(e.target.value);
+  }
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -235,7 +427,10 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindNickName}
+
+                  value={_nickname}
+                  onChange={handleChangeNickName}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -266,7 +461,10 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindName}
+
+                  value={_name}
+                  onChange={handleChangeName}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -342,7 +540,10 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindRut}
+
+                  value={_rut}
+                  onChange={handleChangeRut}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -373,7 +574,9 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindEmail}
+                  value={_email}
+                  onChange={handleChangeEmail}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -406,7 +609,10 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindPocoDeTi}
+
+                  value={_pocodeti}
+                  onChange={handleChangePocoDeTi}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -426,11 +632,21 @@ function Contact(props) {
                   label={"Cuéntanos un poco de ti"}
                 ></TextForm>
               </Grid>
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
+                <BotonAtras
+                  fullwith={"false"}
+                  variant="outlined"
+                  onClick={handleAtras}
+                >
+                  ANTERIOR
+                </BotonAtras>
+              </Grid>
+              <Grid item xs={12} md={6}>
                 <BotonSiguiente
                   fullwith={"false"}
                   variant="outlined"
                   onClick={handleGetDatosContacto}
+                  disabled={_disabledsiguientesingle}
                 >
                   SIGUIENTE
                 </BotonSiguiente>
@@ -481,112 +697,126 @@ function Contact(props) {
               </Grid>
 
               {_existeequipo === "NO" ? (
-                <Grid item xs={12} md={12}>
-                  <TextForm
-                    required
-                    type="text"
-                    style={{
-                      width: "100%",
-                      marginTop: "5px",
-                      marginLeft: "5px",
-                      marginRight: "5px",
-                    }}
-                    {...bindNickName}
-                    inputProps={{
-                      style: {
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontFamily: Fuentes.controles,
-                      },
-                    }}
-                    InputLabelProps={{
-                      style: {
-                        fontSize: 16,
-                        color: Colors.green,
-                        fontFamily: Fuentes.controles,
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant="outlined"
-                    label={"Nombre del grupo / equipo"}
-                  ></TextForm>
-                </Grid>
+                <>
+                  <Grid item xs={12} md={12}>
+                    <TextForm
+                      required
+                      type="text"
+                      style={{
+                        width: "100%",
+                        marginTop: "5px",
+                        marginLeft: "5px",
+                        marginRight: "5px",
+                      }}
+
+                      value={_nickname}
+                      onChange={handleChangeNickName}
+
+                      inputProps={{
+                        style: {
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: Fuentes.controles,
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: {
+                          fontSize: 16,
+                          color: Colors.green,
+                          fontFamily: Fuentes.controles,
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant="outlined"
+                      label={"Nombre del grupo / equipo"}
+                    ></TextForm>
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <TextForm
+                      required
+                      type="text"
+                      style={{
+                        width: "100%",
+                        marginTop: "5px",
+                        marginLeft: "5px",
+                        marginRight: "5px",
+                      }}
+                      value={_name}
+                      onChange={handleChangeName}
+
+                      inputProps={{
+                        style: {
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: Fuentes.controles,
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: {
+                          fontSize: 16,
+                          color: Colors.green,
+                          fontFamily: Fuentes.controles,
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant="outlined"
+                      label={"Nombre del representante "}
+                    ></TextForm>
+                  </Grid>
+                </>
               ) : (
-                <Grid item xs={12} md={12}>
+                <>
+                  <Grid item xs={12} md={12}>
 
 
-                  <TextForm select style={{ width: '100%' }}   {...bindEquipo}
-                    SelectProps={{ native: true, classes: { icon: classes.icon } }}
-                    InputProps={{ style: { fontSize: 16, color: Colors.black, fontFamily: Fuentes.controles, fontWeight: 800 } }}
-                    InputLabelProps={{ style: { fontSize: 16, color: Colors.black, fontFamily: Fuentes.controles, fontWeight: 800 } }}
-                    variant="outlined" label='Selecciona tu equipo' >
-                    {_equipos.map(renderComboGraphQlEquipo)}
-                  </TextForm>
+                    <TextForm select style={{ width: '100%' }} onChange={handleChangeEquipo}
+                      SelectProps={{ native: true, classes: { icon: classes.icon } }}
+                      InputProps={{ style: { fontSize: 16, color: Colors.black, fontFamily: Fuentes.controles, fontWeight: 800 } }}
+                      InputLabelProps={{ style: { fontSize: 16, color: Colors.green, fontFamily: Fuentes.controles, fontWeight: 800 } }}
+                      variant="outlined" label='Selecciona tu equipo' >
+                      <option key={''} value={''}>{''}</option>
+                      {_equipos.map(renderComboGraphQlEquipo)}
+                    </TextForm>
 
 
-                  <TextForm
-                    required
-                    type="text"
-                    style={{
-                      width: "100%",
-                      marginTop: "5px",
-                      marginLeft: "5px",
-                      marginRight: "5px",
-                    }}
-                    {...bindNickName}
-                    inputProps={{
-                      style: {
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontFamily: Fuentes.controles,
-                      },
-                    }}
-                    InputLabelProps={{
-                      style: {
-                        fontSize: 16,
-                        color: Colors.green,
-                        fontFamily: Fuentes.controles,
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant="outlined"
-                    label={"Selecciona tu equipo"}
-                  ></TextForm>
 
+                  </Grid>
 
-                </Grid>
+                  <Grid item xs={12} md={12}>
+                    <TextForm
+                      required
+                      type="text"
+                      style={{
+                        width: "100%",
+                        marginTop: "5px",
+                        marginLeft: "5px",
+                        marginRight: "5px",
+                      }}
+                      value={_nombre_repre}
+                      disabled
+                      inputProps={{
+                        style: {
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: Fuentes.controles,
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: {
+                          fontSize: 16,
+                          color: Colors.green,
+                          fontFamily: Fuentes.controles,
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant="outlined"
+                      label={"Nombre del representante "}
+                    ></TextForm>
+                  </Grid>
+                </>
               )}
 
-              <Grid item xs={12} md={12}>
-                <TextForm
-                  required
-                  type="text"
-                  style={{
-                    width: "100%",
-                    marginTop: "5px",
-                    marginLeft: "5px",
-                    marginRight: "5px",
-                  }}
-                  {...bindName}
-                  inputProps={{
-                    style: {
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontFamily: Fuentes.controles,
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: {
-                      fontSize: 16,
-                      color: Colors.green,
-                      fontFamily: Fuentes.controles,
-                      fontWeight: 600,
-                    },
-                  }}
-                  variant="outlined"
-                  label={"Nombre del representante "}
-                ></TextForm>
-              </Grid>
+
 
               <Grid item xs={12} md={12}>
                 <TextForm
@@ -598,7 +828,11 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindEmail}
+
+
+                  value={_email}
+                  onChange={handleChangeEmail}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -631,7 +865,10 @@ function Contact(props) {
                     marginLeft: "5px",
                     marginRight: "5px",
                   }}
-                  {...bindPocoDeTi}
+
+                  value={_pocodeti}
+                  onChange={handleChangePocoDeTi}
+
                   inputProps={{
                     style: {
                       fontSize: 16,
@@ -651,11 +888,22 @@ function Contact(props) {
                   label={"Cuéntanos un poco de este grupo"}
                 ></TextForm>
               </Grid>
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
+                <BotonAtras
+                  fullwith={"false"}
+                  variant="outlined"
+                  onClick={handleAtras}
+                >
+                  ANTERIOR
+                </BotonAtras>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
                 <BotonSiguiente
                   fullwith={"false"}
                   variant="outlined"
                   onClick={handleGetDatosContacto}
+                  disabled={_disabledsiguienteequipo}
                 >
                   SIGUIENTE
                 </BotonSiguiente>

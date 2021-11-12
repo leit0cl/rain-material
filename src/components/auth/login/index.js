@@ -10,10 +10,11 @@ import { TextForm } from "../../common/textbox";
 import { useInput } from "../../../resources/hooks/input-hook";
 import naranja from "../../common/grafica/naranja.svg";
 
+
+
 function Login(props) {
   const mountedRef = useRef(true);
   const [_showbackdrop, setBackdrop] = useState(false);
-
   const { value: _login, bind: bindLogin, reset: resetLogin } = useInput("");
   const { value: _pass, bind: bindPass, reset: resetPass } = useInput("");
   const [_disabled, setDisabled] = useState(true);
@@ -67,14 +68,14 @@ function Login(props) {
         container
         spacing={2}
         style={{
-          height: "100vh",
+          height: "100%",
           width: "100vw",
           textAlign: "center",
           padding: "2vh",
+          verticalAlign: "top",
         }}
       >
-        <Grid item xs={12} md={4}></Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={12}>
           <Grid container spacing={0}>
             <Grid item xs={10} style={{ textAlign: "left" }}>
               <Typography
@@ -195,7 +196,6 @@ function Login(props) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={4}></Grid>
       </Grid>
 
       <Backloader

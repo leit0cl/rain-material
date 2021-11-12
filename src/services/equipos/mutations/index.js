@@ -1,4 +1,7 @@
-import { API } from "aws-amplify";
+import Amplify, { API } from 'aws-amplify';
+import awsconfig from '../../../aws-exports';
+Amplify.configure(awsconfig);
+
 
 export const WS_CREA_EQUIPO = async (equipo) => {
   const mutation = `mutation MyMutation($bank:CreateEquipoInput!) {

@@ -15,7 +15,6 @@ import { BotonSiguiente, BotonAtras } from "../../common/buttons";
 import { Colors } from "../../common/colors";
 import CloseIcon from "@material-ui/icons/Close";
 import { TextForm } from "../../common/textbox";
-import { useInput } from "../../../resources/hooks/input-hook";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -29,6 +28,8 @@ import PinterestIcon from "@material-ui/icons/Pinterest";
 function Social(props) {
   const mountedRef = useRef(true);
   const [_showbackdrop, setBackdrop] = useState(false);
+  const [_disabled_siguiente, setDisabledSiguiente] = useState(true);
+
   const [_redes, setRedes] = useState({
     facebook: false,
     twitter: false,
@@ -43,43 +44,43 @@ function Social(props) {
     setRedes({ ..._redes, [event.target.name]: event.target.checked });
   };
 
-  const {
-    value: _usertwitter,
-    bind: bindUserTwitter,
-    reset: resetUserTwitter,
-  } = useInput("");
+  const [_usertwitter, setUserTwitter] = useState('');
+  const [_userface, setUserFace] = useState('');
+  const [_userinsta, setUserInsta] = useState('');
+  const [_useryoutube, setUserYouTube] = useState('');
+  const [_userdiscord, setUserDiscord] = useState('');
+  const [_usertwich, setUserTwitch] = useState('');
+  const [_userothers, setUserOtras] = useState('');
 
-  const {
-    value: _userface,
-    bind: bindUserFace,
-    reset: resetUserFace,
-  } = useInput("");
+  const handleChangeUserTwitter = (e) => {
+    setUserTwitter(e.target.value);
+  }
 
-  const {
-    value: _userinsta,
-    bind: bindInstagram,
-    reset: resetInsta,
-  } = useInput("");
+  const handleChangeUserFace = (e) => {
+    setUserFace(e.target.value);
+  }
 
-  const {
-    value: _useryoutube,
-    bind: bindYouTube,
-    reset: resetYouTube,
-  } = useInput("");
+  const handleChangeUserInsta = (e) => {
+    setUserInsta(e.target.value);
+  }
 
-  const {
-    value: _userdiscord,
-    bind: bindDiscord,
-    reset: resetDiscord,
-  } = useInput("");
+  const handleChangeUserYouTube = (e) => {
+    setUserYouTube(e.target.value);
+  }
 
-  const {
-    value: _usertwich,
-    bind: bindTwich,
-    reset: resettwich,
-  } = useInput("");
+  const handleChangeUserDiscord = (e) => {
+    setUserDiscord(e.target.value);
+  }
 
-  const { value: _otras, bind: bindOtras, reset: resetOtras } = useInput("");
+  const handleChangeUserTwitch = (e) => {
+    setUserTwitch(e.target.value);
+  }
+
+  const handleChangeUserOthers = (e) => {
+    setUserOtras(e.target.value);
+  }
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,9 +92,98 @@ function Social(props) {
     setBackdrop(false);
   };
 
+
+  useEffect(() => {
+
+    let cumple_face = false;
+    let cumple_discord = false;
+    let cumple_insta = false;
+    let cumple_twitch = false;
+    let cumple_twitter = false;
+    let cumple_youtube = false;
+    let cumple_others = false;
+
+    if (_redes.facebook === true && _userface === '') {
+      cumple_face = false
+    } else {
+      cumple_face = true
+    }
+
+    if (_redes.discord === true && _userdiscord === '') {
+      cumple_discord = false
+    } else {
+      cumple_discord = true
+    }
+
+    if (_redes.instagram === true && _userinsta === '') {
+      cumple_insta = false
+    } else {
+      cumple_insta = true
+    }
+
+    if (_redes.twitch === true && _usertwich === '') {
+      cumple_twitch = false
+    } else {
+      cumple_twitch = true
+    }
+
+    if (_redes.twitter === true && _usertwitter === '') {
+      cumple_twitter = false
+    } else {
+      cumple_twitter = true
+    }
+
+    if (_redes.youtube === true && _useryoutube === '') {
+      cumple_youtube = false
+    } else {
+      cumple_youtube = true
+    }
+
+    if (_redes.others === true && _userothers === '') {
+      cumple_others = false
+    } else {
+      cumple_others = true
+    }
+
+    if (cumple_face === true && cumple_insta === true && cumple_twitch === true && cumple_twitter === true && cumple_youtube === true && cumple_discord === true && cumple_others === true) {
+      setDisabledSiguiente(false)
+    } else {
+      setDisabledSiguiente(true);
+    }
+
+
+  }, [_userdiscord, _userface, _userinsta, _userothers, _usertwich, _usertwitter, _useryoutube, _redes])
+
   useEffect(() => {
     fade();
-    resetform();
+
+    let borrador = props.data;
+    if (props.data.facebook === undefined) {
+      console.log(borrador);
+      setDisabledSiguiente(true);
+    } else {
+      setRedes({
+        facebook: borrador.facebook,
+        twitter: borrador.twitter,
+        instagram: borrador.instagram,
+        youtube: borrador.youtube,
+        others: borrador.others,
+        discord: borrador.discord,
+        twitch: borrador.twitch,
+      })
+
+      setUserFace(borrador.facebook_user);
+      setUserTwitter(borrador.twitter_user);
+      setUserTwitch(borrador.twitch_user);
+      setUserYouTube(borrador.youtube_user);
+      setUserInsta(borrador.instagram_user);
+      setUserDiscord(borrador.discord_user);
+      setUserOtras(borrador.others_rrss)
+    }
+
+
+
+
     return () => {
       mountedRef.current = false;
     };
@@ -116,7 +206,7 @@ function Social(props) {
     data.facebook = _redes.facebook;
     data.facebook_user = _userface;
 
-    data.instagram = _redes.twitter;
+    data.instagram = _redes.instagram;
     data.instagram_user = _userinsta;
 
     data.youtube = _redes.youtube;
@@ -129,20 +219,11 @@ function Social(props) {
     data.twitch_user = _usertwich;
 
     data.others = _redes.others;
-    data.others_rrss = _otras;
+    data.others_rrss = _userothers;
 
     props.callback(data);
   };
 
-  const resetform = async () => {
-    resetOtras();
-    resetUserTwitter();
-    resetUserFace();
-    resetInsta();
-    resetYouTube();
-    resetDiscord();
-    resettwich();
-  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -150,14 +231,14 @@ function Social(props) {
         container
         spacing={2}
         style={{
-          height: "100vh",
+          height: "100%",
           width: "100vw",
           textAlign: "center",
           padding: "2vh",
+          verticalAlign: "top",
         }}
       >
-        <Grid item xs={12} md={4}></Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={12}>
           <Grid container spacing={0}>
             <Grid item xs={10} style={{ textAlign: "left" }}>
               <Typography
@@ -190,9 +271,9 @@ function Social(props) {
               <LinearProgress variant="determinate" value={66} />
             </Grid>
           </Grid>
-          <Grid container spacing={2} style={{ marginTop: "2em" }}>
+          <Grid container spacing={2} style={{ marginTop: "1em" }}>
             <Grid item xs={12} md={12}>
-              <Divider light={true} style={{ margin: "1em" }}></Divider>
+              <Divider light={true} style={{ marginTop: "5px", marginBottom: "5px" }}></Divider>
               <Typography
                 style={{
                   fontFamily: Fuentes.principal,
@@ -210,13 +291,13 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <FacebookIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
                     checked={_redes.facebook}
                     checkedIcon={
                       <FacebookIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
                     name="facebook"
@@ -240,13 +321,13 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <TwitterIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
                     checked={_redes.twitter}
                     checkedIcon={
                       <TwitterIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
                     name="twitter"
@@ -270,13 +351,13 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <InstagramIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
                     checked={_redes.instagram}
                     checkedIcon={
                       <InstagramIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
                     name="instagram"
@@ -300,13 +381,13 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <YouTubeIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
                     checked={_redes.youtube}
                     checkedIcon={
                       <YouTubeIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
                     name="youtube"
@@ -330,13 +411,13 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <RedditIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
                     checked={_redes.discord}
                     checkedIcon={
                       <RedditIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
                     name="discord"
@@ -360,13 +441,13 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <PinterestIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
                     checked={_redes.twitch}
                     checkedIcon={
                       <PinterestIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
                     name="twitch"
@@ -390,16 +471,16 @@ function Social(props) {
                   <Checkbox
                     icon={
                       <ShareIcon
-                        style={{ color: Colors.lightpurple, fontSize: "3em" }}
+                        style={{ color: Colors.lightpurple, fontSize: "1.5em" }}
                       />
                     }
-                    checked={_redes.otros}
+                    checked={_redes.others}
                     checkedIcon={
                       <ShareIcon
-                        style={{ color: Colors.purple, fontSize: "3em" }}
+                        style={{ color: Colors.purple, fontSize: "1.5em" }}
                       />
                     }
-                    name="otros"
+                    name="others"
                     onChange={handleChangeCHK}
                   />
                 }
@@ -415,239 +496,273 @@ function Social(props) {
                 }
               />
             </Grid>
-            <Grid item xs={12} md={12}>
-              <Divider light={true} style={{ margin: "1em" }}></Divider>
-              <Typography
-                style={{
-                  fontFamily: Fuentes.principal,
-                  color: Colors.black,
-                  fontWeight: 400,
-                  fontSize: 16,
-                }}
-              >
-                Ingresa los usuarios ocupados en plataformas sociales
-              </Typography>
-            </Grid>
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindUserTwitter}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Twitter"}
-              ></TextForm>
-            </Grid>
+            {_redes.facebook === true || _redes.twitter === true || _redes.instagram === true || _redes.youtube === true || _redes.discord === true || _redes.twitch === true || _redes.others === true ?
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindUserFace}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
+              <Grid item xs={12} md={12}>
+                <Divider light={true} style={{ margin: "1em" }}></Divider>
+                <Typography
+                  style={{
+                    fontFamily: Fuentes.principal,
                     color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
+                    fontWeight: 400,
                     fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Facebook"}
-              ></TextForm>
-            </Grid>
+                  }}
+                >
+                  Ingresa los usuarios ocupados en plataformas sociales
+                </Typography>
+              </Grid> : null
+            }
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindInstagram}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Instagram"}
-              ></TextForm>
-            </Grid>
+            {_redes.facebook === true &&
+              <Grid item xs={12} md={12}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
+                  value={_userface}
+                  onChange={handleChangeUserFace}
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindYouTube}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Youtube"}
-              ></TextForm>
-            </Grid>
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Facebook"}
+                ></TextForm>
+              </Grid>}
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindDiscord}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Discord"}
-              ></TextForm>
-            </Grid>
+            {_redes.twitter === true &&
+              <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindTwich}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Twitch"}
-              ></TextForm>
-            </Grid>
+                  value={_usertwitter}
+                  onChange={handleChangeUserTwitter}
 
-            <Grid item xs={12} md={12}>
-              <TextForm
-                required
-                type="text"
-                style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
-                }}
-                {...bindOtras}
-                inputProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontFamily: Fuentes.controles,
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    fontSize: 16,
-                    color: Colors.green,
-                    fontFamily: Fuentes.controles,
-                    fontWeight: 600,
-                  },
-                }}
-                variant="outlined"
-                label={"Otras Plataformas"}
-                helperText={
-                  "Ingresa la URL completa, si son varias, sepáralas por una coma"
-                }
-              ></TextForm>
-            </Grid>
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Twitter"}
+                ></TextForm>
+              </Grid>}
+
+
+            {_redes.instagram === true &&
+              <Grid item xs={12} md={12}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
+
+                  value={_userinsta}
+                  onChange={handleChangeUserInsta}
+
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Instagram"}
+                ></TextForm>
+              </Grid>}
+
+            {_redes.youtube === true &&
+              <Grid item xs={12} md={12}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
+
+                  value={_useryoutube}
+                  onChange={handleChangeUserYouTube}
+
+
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Youtube"}
+                ></TextForm>
+              </Grid>}
+
+            {_redes.discord === true &&
+              <Grid item xs={12} md={12}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
+
+                  value={_userdiscord}
+                  onChange={handleChangeUserDiscord}
+
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Discord"}
+                ></TextForm>
+              </Grid>}
+
+            {_redes.twitch === true &&
+              <Grid item xs={12} md={12}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
+
+                  value={_usertwich}
+                  onChange={handleChangeUserTwitch}
+
+
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Twitch"}
+                ></TextForm>
+              </Grid>}
+
+            {_redes.others === true &&
+              <Grid item xs={12} md={12}>
+                <TextForm
+                  required
+                  type="text"
+                  style={{
+                    width: "100%",
+                    marginTop: "0.5em",
+                    marginLeft: "0.5em",
+                    marginRight: "0.5em",
+                  }}
+
+                  value={_userothers}
+                  onChange={handleChangeUserOthers}
+
+                  inputProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: Fuentes.controles,
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontFamily: Fuentes.controles,
+                      fontWeight: 600,
+                    },
+                  }}
+                  variant="outlined"
+                  label={"Otras Plataformas"}
+                  helperText={
+                    "Ingresa la URL completa, si son varias, sepáralas por una coma"
+                  }
+                ></TextForm>
+              </Grid>}
 
             <Grid item xs={12} md={6}>
               <BotonAtras
@@ -664,13 +779,13 @@ function Social(props) {
                 fullwith={"false"}
                 variant="outlined"
                 onClick={handleGetCodes}
+                disabled={_disabled_siguiente}
               >
                 SIGUIENTE
               </BotonSiguiente>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={4}></Grid>
       </Grid>
 
       <Backloader

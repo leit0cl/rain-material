@@ -28,7 +28,7 @@ export const BotonPppal = withStyles({
       boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
     },
     "&:disabled": {
-      backgroundColor: Colors.pink,
+      backgroundColor: '#cccccc',
       color: Colors.white,
     },
   },
@@ -63,7 +63,7 @@ export const BotonSec = withStyles({
       boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
     },
     "&:disabled": {
-      backgroundColor: Colors.pink,
+      backgroundColor: '#cccccc',
       color: Colors.white,
     },
   },
@@ -94,7 +94,7 @@ export const SinglePlayer = withStyles({
       boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
     },
     "&:disabled": {
-      backgroundColor: Colors.green,
+      backgroundColor: '#cccccc',
       color: Colors.white,
     },
   },
@@ -130,7 +130,7 @@ export const DoublePlayer = withStyles({
       boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
     },
     "&:disabled": {
-      backgroundColor: Colors.green,
+      backgroundColor: '#cccccc',
       color: Colors.white,
     },
   },
@@ -166,7 +166,7 @@ export const BotonSiguiente = withStyles({
       boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
     },
     "&:disabled": {
-      backgroundColor: Colors.pink,
+      backgroundColor: '#cccccc',
       color: Colors.white,
     },
   },
@@ -203,10 +203,120 @@ export const BotonAtras = withStyles({
         boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
       },
       "&:disabled": {
-        backgroundColor: Colors.pink,
+        backgroundColor: '#cccccc',
         color: Colors.white,
       },
     },
   })(Button);
 
 export default BotonPppal;
+
+
+
+export const BotonGrillaOk = withStyles({
+  root: {
+    height: "4em",
+    borderRadius: "25px",
+    padding: "0.5em 1em 0.5em 1em",
+    backgroundColor: Colors.green,
+    border: "solid",
+    borderColor: Colors.white,
+    textAlign: "center",
+    color: Colors.white,
+    fontSize: 13,
+    fontWeight: 400,
+    transition: "all .2s ease-in-out",
+    "&:hover": {
+      transform: "scale(0.9)",
+      color: Colors.pink,
+      border: "solid",
+      borderColor: Colors.pink,
+    },
+    "&:active": {
+      backgroundColor: Colors.white,
+      borderColor: Colors.pink,
+      color: Colors.pink,
+      transform: "scale(1)",
+    },
+    "&:focus": {
+      boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
+    },
+    "&:disabled": {
+      backgroundColor: '#cccccc',
+      color: Colors.white,
+    },
+  },
+})(Button);
+
+
+export const BotonGrillaNOk = withStyles({
+  root: {
+    height: "4em",
+    borderRadius: "25px",
+    padding: "0.5em 1em 0.5em 1em",
+    backgroundColor: Colors.red,
+    border: "solid",
+    borderColor: Colors.white,
+    textAlign: "center",
+    color: Colors.white,
+    fontSize: 13,
+    fontWeight: 400,
+    transition: "all .2s ease-in-out",
+    "&:hover": {
+      transform: "scale(0.9)",
+      color: Colors.pink,
+      border: "solid",
+      borderColor: Colors.pink,
+    },
+    "&:active": {
+      backgroundColor: Colors.white,
+      borderColor: Colors.pink,
+      color: Colors.pink,
+      transform: "scale(1)",
+    },
+    "&:focus": {
+      boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
+    },
+    "&:disabled": {
+      backgroundColor: '#cccccc',
+      color: Colors.white,
+    },
+  },
+})(Button);
+
+
+
+export const BotonGrillaDetalle = withStyles({
+  root: {
+    height: "4em",
+    borderRadius: "25px",
+    padding: "0.5em 1em 0.5em 1em",
+    backgroundColor: Colors.lightpurple,
+    border: "solid",
+    borderColor: Colors.white,
+    textAlign: "center",
+    color: Colors.white,
+    fontSize: 13,
+    fontWeight: 400,
+    transition: "all .2s ease-in-out",
+    "&:hover": {
+      transform: "scale(0.9)",
+      color: Colors.pink,
+      border: "solid",
+      borderColor: Colors.pink,
+    },
+    "&:active": {
+      backgroundColor: Colors.white,
+      borderColor: Colors.pink,
+      color: Colors.pink,
+      transform: "scale(1)",
+    },
+    "&:focus": {
+      boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.5)",
+    },
+    "&:disabled": {
+      backgroundColor: '#cccccc',
+      color: Colors.white,
+    },
+  },
+})(Button);

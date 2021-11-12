@@ -23,21 +23,19 @@ function Codes(props) {
   const [_showbackdrop, setBackdrop] = useState(false);
 
   const { value: _idea1, bind: bindIdea1, reset: resetIdea1 } = useInput("");
-
   const { value: _idea2, bind: bindIdea2, reset: resetIdea2 } = useInput("");
-
   const { value: _idea3, bind: bindIdea3, reset: resetIdea3 } = useInput("");
 
   const [_acepta, setAcepta] = useState(false);
   const [_disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (_acepta) {
+    if (_acepta && _idea1 !== '') {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [_acepta]);
+  }, [_acepta, _idea1]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,14 +89,14 @@ function Codes(props) {
         container
         spacing={2}
         style={{
-          height: "100vh",
+          height: "100%",
           width: "100vw",
           textAlign: "center",
           padding: "2vh",
+          verticalAlign: "top",
         }}
       >
-        <Grid item xs={12} md={4}></Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={12}>
           <Grid container spacing={0}>
             <Grid item xs={10} style={{ textAlign: "left" }}>
               <Typography
@@ -131,9 +129,9 @@ function Codes(props) {
               <LinearProgress variant="determinate" value={100} />
             </Grid>
           </Grid>
-          <Grid container spacing={2} style={{ marginTop: "2em" }}>
+          <Grid container spacing={2} style={{ marginTop: "5px" }}>
             <Grid item xs={12} md={12}>
-              <Divider light={true} style={{ margin: "1em" }}></Divider>
+              <Divider light={true} style={{ marginTop: "5px", marginBottom: "5px" }}></Divider>
             </Grid>
             <Grid item xs={6} md={6}>
               <img src={mora} alt={""}></img>
@@ -174,7 +172,7 @@ function Codes(props) {
                 Ingresa hasta 3 ideas de como podría ser tu código, sin usar
                 espacios ni caracteres especiales
               </Typography>
-              <Divider light={true} style={{ margin: "1em" }}></Divider>
+              <Divider light={true} style={{ margin: "5px" }}></Divider>
             </Grid>
 
             <Grid item xs={12} md={12}>
@@ -182,10 +180,10 @@ function Codes(props) {
                 required
                 type="text"
                 style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
+                  width: "100%",
+                  marginTop: "0.5em",
+                  marginLeft: "0.5em",
+                  marginRight: "0.5em",
                 }}
                 {...bindIdea1}
                 inputProps={{
@@ -213,10 +211,10 @@ function Codes(props) {
                 required
                 type="text"
                 style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
+                  width: "100%",
+                  marginTop: "0.5em",
+                  marginLeft: "0.5em",
+                  marginRight: "0.5em",
                 }}
                 {...bindIdea2}
                 inputProps={{
@@ -244,10 +242,10 @@ function Codes(props) {
                 required
                 type="text"
                 style={{
-                  width: "50%",
-                  marginTop: "1em",
-                  marginLeft: "25%",
-                  marginRight: "25%",
+                  width: "100%",
+                  marginTop: "0.5em",
+                  marginLeft: "0.5em",
+                  marginRight: "0.5em",
                 }}
                 {...bindIdea3}
                 inputProps={{
@@ -327,7 +325,6 @@ function Codes(props) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={4}></Grid>
       </Grid>
 
       <Backloader
